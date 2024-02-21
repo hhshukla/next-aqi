@@ -8,6 +8,7 @@ const Openweatherapi = () => {
   const [error, setError] = useState<string | null>(null);
   const [city, setCity] = useState<string>("");
   const API_KEY = "a1fe25326ae4eee8d168af7a90cfb548";
+  console.log(city, "city");
 
   const toggleModel = () => {
     setOpenModel(!openModel);
