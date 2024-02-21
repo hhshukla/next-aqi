@@ -17,7 +17,7 @@ const Openweatherapi = () => {
   const fetchAQIData = () => {
     setError(null);
     fetch(
-      `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}`
+      `https://api.openweathermap.org/data/2.5/weather?q=vadodara&appid=${API_KEY}`
     )
       .then((response) => {
         if (!response.ok) {
