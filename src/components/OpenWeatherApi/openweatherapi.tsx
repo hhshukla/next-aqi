@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { FaArrowCircleRight } from "react-icons/fa";
 import { TiWeatherPartlySunny } from "react-icons/ti";
 import Brezzometeraqi from "../Brezzometer-aqi/Brezzometer-aqi";
+import { WiSunrise, WiSunset } from "react-icons/wi";
 
 const Openweatherapi = () => {
   const [openModel, setOpenModel] = useState<boolean>(false);
@@ -70,8 +71,19 @@ const Openweatherapi = () => {
                 <div>
                   <h2>name: {aqiData?.name}</h2>
                   <p>Temperature: {aqiData?.main?.temp - 273}°C</p>
-
                   <p>Weather: {aqiData?.weather[0]?.description}</p>
+                  <p className="flex items-center">
+                    sunrise: {aqiData?.sys?.sunrise}
+                    <span className="mx-4">
+                      <WiSunrise className="w-6 h-6" />
+                    </span>
+                  </p>
+                  <p className="flex items-center">
+                    sunset: {aqiData?.sys?.sunset}
+                    <span className="mx-4">
+                      <WiSunset className="w-6 h-6" />
+                    </span>
+                  </p>
                 </div>
               </div>
               <button onClick={() => setShowaqi(!showaqi)} className="mx-4">

@@ -6,9 +6,9 @@ export default function Home() {
   return (
     <>
       <title>AQI-Cipla</title>
-      {/* <Brezzometeraqi /> */}
+      <Brezzometeraqi />
       {/* <Brezometer /> */}
-      <Openweatherapi />
+      {/* <Openweatherapi /> */}
     </>
   );
 }

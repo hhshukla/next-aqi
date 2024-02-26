@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { FaArrowCircleRight } from "react-icons/fa";
+import { GiSunrise, GiSunset } from "react-icons/gi";
 import { TiWeatherPartlySunny } from "react-icons/ti";
 
+//Air Quality Data
 interface AqiData {
   dateTime?: string;
   regionCode?: string;
@@ -48,27 +50,48 @@ interface HealthRecommendations {
   pregnantWomen?: string;
   children?: string;
 }
+//Weather Data
+interface WeatherData {
+  name?: string;
+  main: number;
+  temp: number;
+  weather?: weather[];
+}
+interface weather {
+  description?: string;
+}
+interface Location {
+  lat?: number;
+  lng?: number;
+}
 
 const Brezzometeraqi: React.FC = () => {
   const [openModel, setOpenModel] = useState<boolean>(false);
   const [aqiData, setAqiData] = useState<AqiData | null>(null);
+  const [weatherData, setWeatherData] = useState<any | null>(null);
+
   const [error, setError] = useState<string | null>(null);
   const [city, setCity] = useState<string>("");
-  console.log(city);
-  console.log(aqiData);
+  const API_KEY = "a1fe25326ae4eee8d168af7a90cfb548";
+
+  console.log(city, "city");
+  console.log(aqiData, "aqiData");
+  console.log(weatherData, "weatherData");
 
   const getBackgroundColor = () => {
-    if (aqiData && aqiData?.indexes && aqiData?.indexes[0]?.category) {
-      const aqi = aqiData?.indexes[0]?.aqi;
-      if (aqi !== undefined && aqi >= 70) {
-        return "bg-green-500";
-      } else if (aqi !== undefined && aqi <= 50) {
-        return "bg-yellow-500";
+    if (aqiData && aqiData.indexes && aqiData.indexes[0]?.category) {
+      const category = aqiData.indexes[0].category.toLowerCase();
+      if (category === "good") {
+        return "bg-green-500"; // Good air quality
+      } else if (category === "moderate") {
+        return "bg-yellow-500"; // Moderate air quality
+      } else if (category === "low air quality") {
+        return "bg-red-500"; // Low air quality
       } else {
-        return "bg-red-500";
+        return "bg-gray-500"; // Default background color for other cases
       }
     }
-    return "bg-gray-500";
+    return "bg-gray-500"; // Default background color if category is not available
   };
 
   const toggleModel = () => {
@@ -76,59 +99,50 @@ const Brezzometeraqi: React.FC = () => {
   };
   const fetchAQIData = () => {
     setError(null);
-
-    const requestBody = {
-      location: {
-        latitude: 37.419734,
-        longitude: -122.0827784,
-      },
-      extraComputations: [
-        "HEALTH_RECOMMENDATIONS",
-        "DOMINANT_POLLUTANT_CONCENTRATION",
-        "POLLUTANT_CONCENTRATION",
-        "LOCAL_AQI",
-        "POLLUTANT_ADDITIONAL_INFO",
-      ],
-      languageCode: "en",
-    };
-
-    fetch(
-      `https://airquality.googleapis.com/v1/currentConditions:lookup?key=${process.env.NEXT_PUBLIC_APP_GOOGLE_MAPS_API_KEY}`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(requestBody),
-      }
-    )
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Failed to fetch AQI data");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        setAqiData(data);
-      })
-      .catch((error) => {
-        setError(error.message);
-      });
   };
 
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(async (position) => {
         const response = await fetch(
-          `https://api.openweathermap.org/data/2.5/weather?lat=${position.coords.latitude}&lon=${position.coords.longitude}&appid=a1fe25326ae4eee8d168af7a90cfb548`
+          `https://api.openweathermap.org/data/2.5/weather?lat=${position.coords.latitude}&lon=${position.coords.longitude}&appid=${API_KEY}`
+        );
+        const AQIres = await fetch(
+          `https://airquality.googleapis.com/v1/currentConditions:lookup?key=${process.env.NEXT_PUBLIC_APP_GOOGLE_MAPS_API_KEY}`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              location: {
+                latitude: position.coords.latitude,
+                longitude: position.coords.longitude,
+              },
+              extraComputations: [
+                "HEALTH_RECOMMENDATIONS",
+                "DOMINANT_POLLUTANT_CONCENTRATION",
+                "POLLUTANT_CONCENTRATION",
+                "LOCAL_AQI",
+                "POLLUTANT_ADDITIONAL_INFO",
+              ],
+              languageCode: "en",
+            }),
+          }
         );
 
         if (!response.ok) {
           throw new Error("Failed to fetch AQI data");
         }
-
+        if (!AQIres.ok) {
+          throw new Error("Failed to fetch AQI data");
+        }
+        console.log("AQIres", AQIres);
+        console.log(response, "response");
         const data = await response.json();
         setCity(data.name);
+        setAqiData(await AQIres.json());
+        setWeatherData(data);
       });
     }
   }, []);
@@ -165,6 +179,26 @@ const Brezzometeraqi: React.FC = () => {
 
                 <h3 className="text-white text-base font-medium">Vadodara</h3>
               </div>
+              {weatherData && (
+                <div>
+                  <h2>name: {weatherData?.name}</h2>
+                  <p>Temperature: {weatherData?.main?.temp - 273}°C</p>
+                  <p className="">wind speed :{weatherData?.wind?.speed}</p>
+                  <p>Weather: {weatherData?.weather[0]?.description}</p>
+                  <p className="flex items-center my-2">
+                    sunrise: {weatherData?.sys?.sunrise}
+                    <span className="mx-4">
+                      <GiSunrise className="w-6 h-6" />
+                    </span>
+                  </p>
+                  <p className="flex items-center">
+                    sunset: {weatherData?.sys?.sunset}
+                    <span className="mx-4">
+                      <GiSunset className="w-6 h-6" />
+                    </span>
+                  </p>
+                </div>
+              )}
 
               <button onClick={toggleModel}>
                 <FaArrowCircleRight
@@ -175,6 +209,7 @@ const Brezzometeraqi: React.FC = () => {
             </div>
           </div>
         </div>
+
         {error && <p className="text-red-600 mb-4">Error: {error}</p>}
         {aqiData && (
           <div className="p-4 m-3 border bg-green-800 border-gray-300 rounded-lg shadow-md text-white">
