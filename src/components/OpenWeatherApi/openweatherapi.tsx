@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { FaArrowCircleRight } from "react-icons/fa";
 import { TiWeatherPartlySunny } from "react-icons/ti";
+import Brezzometeraqi from "../Brezzometer-aqi/Brezzometer-aqi";
 
 const Openweatherapi = () => {
   const [openModel, setOpenModel] = useState<boolean>(false);
   const [aqiData, setAqiData] = useState<any | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [city, setCity] = useState<string>("");
+  const [showaqi, setShowaqi] = useState(false);
   const API_KEY = "a1fe25326ae4eee8d168af7a90cfb548";
   console.log(city, "city");
 
@@ -64,12 +66,17 @@ const Openweatherapi = () => {
                 <div className="my-3">
                   <TiWeatherPartlySunny className="w-10 h-10" />
                 </div>
-
                 <h3 className="text-white text-lg font-semibold">Weather</h3>
+                <div>
+                  <h2>name: {aqiData?.name}</h2>
+                  <p>Temperature: {aqiData?.main?.temp - 273}°C</p>
 
-                {/* <h3 className="text-white text-base font-medium">Vadodara</h3> */}
+                  <p>Weather: {aqiData?.weather[0]?.description}</p>
+                </div>
               </div>
-
+              <button onClick={() => setShowaqi(!showaqi)} className="mx-4">
+                Show AQI Data
+              </button>
               <button onClick={toggleModel}>
                 <FaArrowCircleRight
                   className="text-2xl text-white font-semibold"
@@ -81,34 +88,7 @@ const Openweatherapi = () => {
         </div>
       </div>
 
-      {openModel && (
-        <div>
-          <div className="container mx-auto">
-            {aqiData && (
-              <div className="p-4 m-3 border bg-green-800 border-gray-300 rounded-lg shadow-md text-white">
-                <div className="mt-4 text-lg font-bold flex flex-col justify-center items-center">
-                  <h3 className="text-lg font-semibold mb-2">
-                    Check your Current City Weather:{city}
-                  </h3>
-                  <div className=" text-lg font-bold capitalize bg-white text-green-600 p-4 m-3 rounded-xl w-full">
-                    {aqiData ? (
-                      <div>
-                        <h2>name: {aqiData?.name}</h2>
-                        <p>Temperature: {aqiData?.main?.temp - 273}°C</p>
-
-                        <p>Weather: {aqiData?.weather[0]?.description}</p>
-                      </div>
-                    ) : (
-                      <p>Loading...</p>
-                    )}
-                    {error && <p>Error: {error}</p>}
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
+      {showaqi && <Brezzometeraqi />}
     </div>
   );
 };

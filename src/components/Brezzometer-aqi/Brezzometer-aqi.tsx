@@ -53,10 +53,23 @@ const Brezzometeraqi: React.FC = () => {
   const [openModel, setOpenModel] = useState<boolean>(false);
   const [aqiData, setAqiData] = useState<AqiData | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [city, setCity] = useState<string>("");
+  console.log(city);
+  console.log(aqiData);
 
-  useEffect(() => {
-    fetchUserLocation();
-  }, []);
+  const getBackgroundColor = () => {
+    if (aqiData && aqiData?.indexes && aqiData?.indexes[0]?.category) {
+      const aqi = aqiData?.indexes[0]?.aqi;
+      if (aqi !== undefined && aqi >= 70) {
+        return "bg-green-500";
+      } else if (aqi !== undefined && aqi <= 50) {
+        return "bg-yellow-500";
+      } else {
+        return "bg-red-500";
+      }
+    }
+    return "bg-gray-500";
+  };
 
   const toggleModel = () => {
     setOpenModel(!openModel);
@@ -103,42 +116,30 @@ const Brezzometeraqi: React.FC = () => {
       });
   };
 
-  const fetchUserLocation = () => {
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        console.log(position);
-        const { latitude, longitude } = position.coords;
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(async (position) => {
+        const response = await fetch(
+          `https://api.openweathermap.org/data/2.5/weather?lat=${position.coords.latitude}&lon=${position.coords.longitude}&appid=a1fe25326ae4eee8d168af7a90cfb548`
+        );
 
-        fetch(
-          `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${process.env.NEXT_PUBLIC_APP_GOOGLE_MAPS_API_KEY}`
-        )
-          .then((response) => response.json())
-
-          .catch((error) => {
-            console.error("Error fetching city name:", error);
-          });
-      },
-      (error) => {
-        console.error("Error getting user's location:", error);
-      }
-    );
-  };
-
-  const extractCityName = (data: any) => {
-    if (data?.results && data?.results?.length > 0) {
-      for (let component of data.results[0].address_components) {
-        if (component.types.includes("locality")) {
-          return component.long_name;
+        if (!response.ok) {
+          throw new Error("Failed to fetch AQI data");
         }
-      }
+
+        const data = await response.json();
+        setCity(data.name);
+      });
     }
-  };
+  }, []);
 
   return (
     <div>
       <div className="container mx-auto">
         <div className="md:flex justify-end items-center">
-          <div className="m-4 p-4 rounded-md bg-green-500  cursor-pointer bg-opacity-50 ">
+          <div
+            className={`m-4 p-4 rounded-md   cursor-pointer ${getBackgroundColor()}`}
+          >
             <div className="flex justify-between items-end">
               <div className="mx-5">
                 <div className="my-3">
@@ -146,8 +147,21 @@ const Brezzometeraqi: React.FC = () => {
                 </div>
 
                 <h3 className="text-white text-lg font-semibold">
-                  Air Quality
+                  Air Quality of {city}
                 </h3>
+
+                {aqiData?.indexes && (
+                  <div className="text-lg font-bold   text-white  w-full capitalize">
+                    {aqiData?.indexes?.map((indexes, i) => (
+                      <div key={i}>
+                        <h5 className="">
+                          indexes-category:
+                          <span className="text-base">{indexes?.category}</span>
+                        </h5>
+                      </div>
+                    ))}
+                  </div>
+                )}
 
                 <h3 className="text-white text-base font-medium">Vadodara</h3>
               </div>
@@ -165,7 +179,9 @@ const Brezzometeraqi: React.FC = () => {
         {aqiData && (
           <div className="p-4 m-3 border bg-green-800 border-gray-300 rounded-lg shadow-md text-white">
             <div className="mt-4 text-lg font-bold flex flex-col justify-center items-center">
-              <h3 className="text-lg font-semibold mb-2">Air Quality Data:</h3>
+              <h3 className="text-lg font-semibold mb-2">
+                Air Quality Data:{city}
+              </h3>
               <div className="grid grid-cols-1 lg:grid-cols-2"></div>
               <div className=" text-lg font-bold capitalize bg-white text-green-600 p-4 m-3 rounded-xl w-full">
                 {aqiData?.dateTime && (
