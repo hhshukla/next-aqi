@@ -1,5 +1,5 @@
 import Image from "next/image";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 import { FaPeopleGroup } from "react-icons/fa6";
 import { MdElderlyWoman } from "react-icons/md";
@@ -72,24 +72,31 @@ interface weather {
 //   lng?: number;
 // }
 
-const Brezzometeraqi: React.FC = () => {
-  const [openModel, setOpenModel] = useState<boolean>(false);
-  const [aqiData, setAqiData] = useState<AqiData | null>(null);
-  const [weatherData, setWeatherData] = useState<any | null>(null);
+const Brezzometeraqi = ({
+  aqiData,
+  city,
+  weatherData,
+}: {
+  aqiData: AqiData;
+  city: string;
+  weatherData: any;
+}) => {
+  // const [openModel, setOpenModel] = useState<boolean>(false);
+  // const [aqiData, setAqiData] = useState<AqiData | null>(null);
+  // const [weatherData, setWeatherData] = useState<any | null>(null);
   const [selectedPollutant, setSelectedPollutant] = useState<string | null>(
     null
   );
   const [selectedTab, setSelectedTab] = useState<string | null>();
-  const [loading, setLoading] = useState<boolean>(true);
 
   const [error, setError] = useState<string | null>(null);
-  const [city, setCity] = useState<string>("");
+  // const [city, setCity] = useState<string>("");
 
-  const API_KEY = "a1fe25326ae4eee8d168af7a90cfb548";
+  // const API_KEY = "a1fe25326ae4eee8d168af7a90cfb548";
 
-  console.log(city, "city");
-  console.log(aqiData, "aqiData");
-  console.log(weatherData, "weatherData");
+  // console.log(city, "city");
+  // console.log(aqiData, "aqiData");
+  // console.log(weatherData, "weatherData");
 
   // const getBackgroundColor = () => {
   //   if (aqiData && aqiData.indexes && aqiData?.indexes[1]?.category) {
@@ -114,57 +121,54 @@ const Brezzometeraqi: React.FC = () => {
   //   setError(null);
   // };
 
-  useEffect(() => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(async (position) => {
-        const response = await fetch(
-          `https://api.openweathermap.org/data/2.5/weather?lat=${position.coords.latitude}&lon=${position.coords.longitude}&appid=${API_KEY}`
-        );
-        const AQIres = await fetch(
-          `https://airquality.googleapis.com/v1/currentConditions:lookup?key=${process.env.NEXT_PUBLIC_APP_GOOGLE_MAPS_API_KEY}`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              location: {
-                latitude: position.coords.latitude,
-                longitude: position.coords.longitude,
-              },
-              extraComputations: [
-                "HEALTH_RECOMMENDATIONS",
-                "DOMINANT_POLLUTANT_CONCENTRATION",
-                "POLLUTANT_CONCENTRATION",
-                "LOCAL_AQI",
-                "POLLUTANT_ADDITIONAL_INFO",
-              ],
-              languageCode: "en",
-            }),
-          }
-        );
+  // useEffect(() => {
+  //   if (navigator.geolocation) {
+  //     navigator.geolocation.getCurrentPosition(async (position) => {
+  //       const response = await fetch(
+  //         `https://api.openweathermap.org/data/2.5/weather?lat=${position.coords.latitude}&lon=${position.coords.longitude}&appid=${API_KEY}`
+  //       );
+  //       const AQIres = await fetch(
+  //         `https://airquality.googleapis.com/v1/currentConditions:lookup?key=${process.env.NEXT_PUBLIC_APP_GOOGLE_MAPS_API_KEY}`,
+  //         {
+  //           method: "POST",
+  //           headers: {
+  //             "Content-Type": "application/json",
+  //           },
+  //           body: JSON.stringify({
+  //             location: {
+  //               latitude: position.coords.latitude,
+  //               longitude: position.coords.longitude,
+  //             },
+  //             extraComputations: [
+  //               "HEALTH_RECOMMENDATIONS",
+  //               "DOMINANT_POLLUTANT_CONCENTRATION",
+  //               "POLLUTANT_CONCENTRATION",
+  //               "LOCAL_AQI",
+  //               "POLLUTANT_ADDITIONAL_INFO",
+  //             ],
+  //             languageCode: "en",
+  //           }),
+  //         }
+  //       );
 
-        if (!response.ok) {
-          throw new Error("Failed to fetch AQI data");
-        }
-        if (!AQIres.ok) {
-          throw new Error("Failed to fetch AQI data");
-        }
+  //       if (!response.ok) {
+  //         throw new Error("Failed to fetch AQI data");
+  //       }
+  //       if (!AQIres.ok) {
+  //         throw new Error("Failed to fetch AQI data");
+  //       }
 
-        console.log("AQIres", AQIres);
-        console.log(response, "response");
-        const data = await response.json();
-        setCity(data.name);
-        setAqiData(await AQIres.json());
-        setWeatherData(data);
-        setAqiData(aqiData);
-        // setLoading(false);
-      });
-    }
-  }, []);
-  if (loading) {
-    return <div>Loading...</div>;
-  }
+  //       console.log("AQIres", AQIres);
+  //       console.log(response, "response");
+  //       const data = await response.json();
+  //       setCity(data.name);
+  //       setAqiData(await AQIres.json());
+  //       setWeatherData(data);
+  //       setAqiData(aqiData);
+  //       // setLoading(false);
+  //     });
+  //   }
+  // }, []);
 
   if (error) {
     return <div>Error: {error}</div>;
@@ -429,7 +433,9 @@ const Brezzometeraqi: React.FC = () => {
                           ? "bg-black text-white"
                           : "bg-white"
                       }`}
-                      onClick={() => handlePollutantTabClick(pollutant?.code)}
+                      onClick={() =>
+                        handlePollutantTabClick(pollutant?.code ?? "")
+                      }
                     >
                       {pollutant.displayName}
                     </li>
@@ -579,7 +585,9 @@ const Brezzometeraqi: React.FC = () => {
                       </h3>
                       <p>
                         {aqiData?.healthRecommendations && selectedTab
-                          ? aqiData?.healthRecommendations[selectedTab]
+                          ? aqiData?.healthRecommendations[
+                              selectedTab as keyof HealthRecommendations
+                            ]
                           : ""}
                       </p>
                     </div>

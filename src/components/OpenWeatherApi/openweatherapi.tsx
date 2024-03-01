@@ -100,7 +100,7 @@ const Openweatherapi = () => {
         </div>
       </div>
 
-      {showaqi && <Brezzometeraqi />}
+      {/* {showaqi && <Brezzometeraqi />} */}
     </div>
   );
 };

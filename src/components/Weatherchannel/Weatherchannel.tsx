@@ -132,7 +132,7 @@ const Weatherchannel = () => {
         </div>
       </div>
 
-      {showaqi && <Brezzometeraqi />}
+      {/* {showaqi && <Brezzometeraqi />} */}
     </div>
   );
 };
