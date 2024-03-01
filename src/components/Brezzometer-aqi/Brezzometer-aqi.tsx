@@ -429,7 +429,9 @@ const Brezzometeraqi: React.FC = () => {
                           ? "bg-black text-white"
                           : "bg-white"
                       }`}
-                      onClick={() => handlePollutantTabClick(pollutant?.code)}
+                      onClick={() =>
+                        handlePollutantTabClick(pollutant?.code ?? "")
+                      }
                     >
                       {pollutant.displayName}
                     </li>
@@ -579,7 +581,9 @@ const Brezzometeraqi: React.FC = () => {
                       </h3>
                       <p>
                         {aqiData?.healthRecommendations && selectedTab
-                          ? aqiData?.healthRecommendations[selectedTab]
+                          ? aqiData?.healthRecommendations[
+                              selectedTab as keyof HealthRecommendations
+                            ]
                           : ""}
                       </p>
                     </div>
