@@ -54,6 +54,7 @@ interface HealthRecommendations {
 
 const Header = () => {
   const [openModel, setOpenModel] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const [aqiData, setAqiData] = useState<AqiData | null>(null);
   const [weatherData, setWeatherData] = useState<any | null>(null);
@@ -71,6 +72,7 @@ const Header = () => {
         const response = await fetch(
           `https://api.openweathermap.org/data/2.5/weather?lat=${position.coords.latitude}&lon=${position.coords.longitude}&appid=${API_KEY}`
         );
+
         const AQIres = await fetch(
           `https://airquality.googleapis.com/v1/currentConditions:lookup?key=${process.env.NEXT_PUBLIC_APP_GOOGLE_MAPS_API_KEY}`,
           {
@@ -105,15 +107,16 @@ const Header = () => {
         console.log(response, "response");
         const data = await response.json();
         setCity(data.name);
-        setAqiData(await AQIres.json());
+        const aqidata = await AQIres.json();
+        setAqiData(aqidata);
         setWeatherData(data);
+        if (aqiData) setIsLoading(false);
       });
+    } else {
+      console.log("hello");
     }
   }, []);
 
-  console.log(city, "city");
-  console.log(aqiData, "aqiData");
-  console.log(weatherData, "weatherData");
   const getBackgroundColor = () => {
     if (aqiData && aqiData.indexes && aqiData?.indexes[1]?.category) {
       const category = aqiData?.indexes[1]?.category?.toLowerCase();
@@ -168,10 +171,7 @@ const Header = () => {
 
                           <h3 className="text-white text-sm font-medium">
                             Today AQI of {city} is:
-                            {aqiData &&
-                              aqiData.indexes &&
-                              aqiData.indexes[1].aqi != undefined &&
-                              aqiData?.indexes[1]?.aqi}
+                            {aqiData?.indexes && aqiData?.indexes[1]?.aqi}
                           </h3>
                           <div className="flex items-center">
                             {weatherData && (
@@ -196,11 +196,18 @@ const Header = () => {
         </div>
       </div>
       {/* Conditional rendering of BrezometerAQI component */}
-      {openModel && (
-        <div>
-          <div className="bg-gradient-to-r from-blue-300 to-blue-500 my-4 p-4 rounded-lg">
-            <Brezzometeraqi />
-          </div>
+      {openModel && isLoading && (
+        <div className="bg-gradient-to-r from-blue-300 to-blue-500 my-4 p-4 rounded-lg">
+          loading...
+        </div>
+      )}
+      {openModel && !isLoading && aqiData && (
+        <div className="bg-gradient-to-r from-blue-300 to-blue-500 my-4 p-4 rounded-lg">
+          <Brezzometeraqi
+            aqiData={aqiData}
+            city={city}
+            weatherData={weatherData}
+          />
         </div>
       )}
     </div>
