@@ -1,9 +1,9 @@
 import Link from "next/link";
 import React, { useState } from "react";
 import { FaArrowCircleRight } from "react-icons/fa";
-import { GiSunrise, GiSunset } from "react-icons/gi";
-import { TiWeatherPartlySunny } from "react-icons/ti";
+import { MdOutlineWbSunny } from "react-icons/md";
 import Brezzometeraqi from "../Brezzometer-aqi/Brezzometer-aqi";
+import Image from "next/image";
 
 interface AqiData {
   dateTime?: string;
@@ -64,9 +64,7 @@ const Header = () => {
   const toggleModel = () => {
     setOpenModel(!openModel);
   };
-  const fetchAQIData = () => {
-    setError(null);
-  };
+
   React.useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(async (position) => {
@@ -122,7 +120,7 @@ const Header = () => {
       if (category === "satisfactory air quality") {
         return "bg-green-500 "; // satisfactory air  quality
       } else if (category === "moderate air quality") {
-        return "bg-yellow-500 bg-opacity-50 border-[1px] border-white"; // Moderate air quality
+        return "bg-yellow-500 "; // Moderate air quality
       } else if (category === "low air quality") {
         return "bg-red-500"; // Low air quality
       } else {
@@ -133,12 +131,19 @@ const Header = () => {
   };
 
   return (
-    <header className="bg-black m-5 p-5">
-      <div className="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
-        <div className="flex h-16 items-center justify-between">
+    <div>
+      <div className="bg-white  m-5 p-5  rounded-xl">
+        <div className="flex  items-center justify-between">
           <div className="flex-1 md:flex md:items-center md:gap-12 cursor-pointer">
             <Link className="block text-teal-600" href="/">
-              <h3>Breathe Free</h3>
+              <Image
+                src={
+                  "https://www.breathefree.com/sites/all/themes/breathfree_theme/images/logo.png"
+                }
+                width={200}
+                height={200}
+                alt="Air Quality Index Logo"
+              />
             </Link>
           </div>
 
@@ -146,56 +151,44 @@ const Header = () => {
             <nav aria-label="Global" className="hidden md:block">
               <ul className="flex items-center gap-6 text-sm">
                 <li>
-                  <Link
-                    className="text-gray-500 transition hover:text-gray-500/75"
-                    href="/"
-                  >
-                    Home
-                  </Link>
-                </li>
-                <li className="">
-                  <div
-                    className={`my-2 p-2 rounded-md   cursor-pointer ${getBackgroundColor()} `}
-                  >
-                    <div className="flex flex-col">
-                      <div className="mx-5">
-                        <div className="my-2">
-                          <TiWeatherPartlySunny className="w-5 h-5" />
-                        </div>
-
-                        <h3 className="text-white text-sm font-medium">
-                          Air Quality of {city}
-                        </h3>
-                      </div>
-                      <div className="flex">
-                        {weatherData && (
-                          <div className="mx-5">
-                            {/* <h2>Name of City: {weatherData?.name}</h2> */}
-                            <p> {weatherData?.main?.temp - 273}°C</p>
-                            {/* <p className="">{weatherData?.wind?.speed}</p>
-                          <p> {weatherData?.weather[1]?.description}</p>
-                          <div className="flex items-center">
-                            <p className="flex items-center mb-2">
-                              sunrise: {weatherData?.sys?.sunrise}
-                              <span className="mx-4">
-                                <GiSunrise className="w-6 h-6" />
-                              </span>
-                            </p>
-                            <p className="flex items-center mb-2">
-                              sunset: {weatherData?.sys?.sunset}
-                              <span className="mx-4">
-                                <GiSunset className="w-6 h-6" />
-                              </span>
-                            </p>
-                          </div> */}
+                  <button className="bg-gradient-to-r from-green-500 to-green-700 text-white font-semibold rounded-md p-1">
+                    <div
+                      className={` p-2 rounded-md   cursor-pointer ${getBackgroundColor()}`}
+                    >
+                      <span className="relative flex h-3 w-3">
+                        <span className="animate-ping absolute inset-0 inline-flex h-full w-full rounded-full bg-white"></span>
+                        <span className="relative inline-flex rounded-full h-3 w-3 bg-green-300"></span>
+                      </span>
+                      <div className="flex flex-col text-start">
+                        <div className="mx-5">
+                          <div className="my-2">
+                            <MdOutlineWbSunny className="w-5 h-5" />
                           </div>
-                        )}
-                        <div onClick={toggleModel}>
-                          <FaArrowCircleRight className="text-xl text-white  mx-2 my-1 bg-black rounded-full" />
+                          <h2 className="text-xl">{weatherData?.name}</h2>
+
+                          <h3 className="text-white text-sm font-medium">
+                            Today AQI of {city} is:
+                            {aqiData &&
+                              aqiData.indexes &&
+                              aqiData.indexes[1].aqi != undefined &&
+                              aqiData?.indexes[1]?.aqi}
+                          </h3>
+                          <div className="flex items-center">
+                            {weatherData && (
+                              <div className=" my-2">
+                                <p className="text-xl">
+                                  {weatherData?.main?.temp.toFixed(0) - 273}°C
+                                </p>
+                              </div>
+                            )}
+                            <div onClick={toggleModel}>
+                              <FaArrowCircleRight className="text-2xl   mx-2 my-1 rounded-full" />
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
+                  </button>
                 </li>
               </ul>
             </nav>
@@ -204,13 +197,13 @@ const Header = () => {
       </div>
       {/* Conditional rendering of BrezometerAQI component */}
       {openModel && (
-        <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
-          <div className="bg-white p-8 rounded-lg">
+        <div>
+          <div className="bg-gradient-to-r from-blue-300 to-blue-500 my-4 p-4 rounded-lg">
             <Brezzometeraqi />
           </div>
         </div>
       )}
-    </header>
+    </div>
   );
 };
 
