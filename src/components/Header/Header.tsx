@@ -208,11 +208,7 @@ const Header = () => {
           <p className="text-center text-green-500 text-xl my-2 font-bold">
             Fetching weather data... Please wait.☁️☁️☁️☁️
           </p>
-          {/* <div className="flex items-center justify-center space-x-2">
-            <div className="w-4 h-4 rounded-full animate-pulse bg-blue-600"></div>
-            <div className="w-4 h-4 rounded-full animate-pulse bg-blue-600"></div>
-            <div className="w-4 h-4 rounded-full animate-pulse bg-blue-600"></div>
-          </div> */}
+
           <div className="my-5 w-full  flex justify-center items-center">
             <div className="flex  w-full items-center justify-center ">
               <div className="flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-tr from-blue-500 to-sky-500 animate-spin">
