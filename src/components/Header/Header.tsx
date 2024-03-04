@@ -164,19 +164,18 @@ const Header = () => {
                           <div className="flex justify-between">
                             {weatherData && (
                               <div className="m-2">
-                                <p className="text-4xl">
-                                  {weatherData?.main?.temp.toFixed(0) - 273}°C
-                                </p>
+                                <h3 className="text-blue-500 text-6xl font-bold">
+                                  AQI {""}
+                                  {aqiData?.indexes && aqiData?.indexes[1]?.aqi}
+                                </h3>
                               </div>
                             )}
                             <div className="flex flex-col text-start mx-2">
                               <h2 className="text-xl">{weatherData?.name}</h2>
 
-                              <h3 className="text-black text-xl font-medium">
-                                AQI is {""}
-                                {aqiData?.indexes && aqiData?.indexes[1]?.aqi}
-                                today.
-                              </h3>
+                              <p className="text-4xl">
+                                {weatherData?.main?.temp.toFixed(0) - 273}°C
+                              </p>
                             </div>
 
                             <div
