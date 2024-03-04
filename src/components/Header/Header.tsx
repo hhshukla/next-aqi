@@ -203,7 +203,7 @@ const Header = () => {
         </div>
       </div>
       {/* Conditional rendering of BrezometerAQI component */}
-      {openModel && isLoading && (
+      {/* {openModel && isLoading && (
         <div className="bg-sky-200  m-4 p-4 shadow-xl rounded-full">
           <p className="text-center text-green-500 text-xl my-2 font-bold">
             Fetching weather data... Please wait.☁️☁️☁️☁️
@@ -217,8 +217,8 @@ const Header = () => {
             </div>
           </div>
         </div>
-      )}
-      {openModel && !isLoading && aqiData && (
+      )} */}
+      {openModel && aqiData && (
         <div className="">
           <Brezzometeraqi
             aqiData={aqiData}
