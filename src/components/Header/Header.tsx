@@ -64,6 +64,7 @@ const Header = () => {
   const API_KEY = "a1fe25326ae4eee8d168af7a90cfb548";
   const toggleModel = () => {
     setOpenModel(!openModel);
+    if (aqiData && !isLoading) setIsLoading(false);
   };
 
   React.useEffect(() => {
@@ -105,15 +106,15 @@ const Header = () => {
         }
         console.log("AQIres", AQIres);
         console.log(response, "response");
+
         const data = await response.json();
         setCity(data.name);
         const aqidata = await AQIres.json();
         setAqiData(aqidata);
         setWeatherData(data);
         if (aqiData) setIsLoading(false);
+        console.log(aqiData, "aqidata");
       });
-    } else {
-      console.log("hello");
     }
   }, []);
 
@@ -127,10 +128,10 @@ const Header = () => {
       } else if (category === "low air quality") {
         return "bg-red-500"; // Low air quality
       } else {
-        return "bg-gray-500"; // Default background color for other cases
+        return "bg-sky-300"; // Default background color for other cases
       }
     }
-    return "bg-gray-500"; // Default background color if category is not available
+    return "bg-sky-300"; // Default background color if category is not available
   };
 
   return (
@@ -162,29 +163,35 @@ const Header = () => {
                         <span className="animate-ping absolute inset-0 inline-flex h-full w-full rounded-full bg-white"></span>
                         <span className="relative inline-flex rounded-full h-3 w-3 bg-green-300"></span>
                       </span>
-                      <div className="flex flex-col text-start">
+                      <div className="flex justify-center items-center">
                         <div className="mx-5">
-                          <div className="my-2">
-                            <MdOutlineWbSunny className="w-5 h-5" />
-                          </div>
-                          <h2 className="text-xl">{weatherData?.name}</h2>
-
-                          <h3 className="text-white text-sm font-medium">
-                            Today AQI of {city} is:
-                            {aqiData?.indexes && aqiData?.indexes[1]?.aqi}
-                          </h3>
-                          <div className="flex items-center">
+                          <div className="flex justify-between">
                             {weatherData && (
-                              <div className=" my-2">
-                                <p className="text-xl">
+                              <div className="m-2">
+                                <p className="text-4xl">
                                   {weatherData?.main?.temp.toFixed(0) - 273}°C
                                 </p>
                               </div>
                             )}
-                            <div onClick={toggleModel}>
+                            <div className="flex flex-col text-start mx-2">
+                              <h2 className="text-xl">{weatherData?.name}</h2>
+
+                              <h3 className="text-white text-xl font-medium">
+                                Today AQI of {city} is:
+                                {aqiData?.indexes && aqiData?.indexes[1]?.aqi}
+                              </h3>
+                            </div>
+
+                            <div
+                              onClick={toggleModel}
+                              className="flex items-center"
+                            >
                               <FaArrowCircleRight className="text-2xl   mx-2 my-1 rounded-full" />
                             </div>
                           </div>
+                          {/* <div className="my-2">
+                            <MdOutlineWbSunny className="w-5 h-5" />
+                          </div> */}
                         </div>
                       </div>
                     </div>
@@ -197,12 +204,26 @@ const Header = () => {
       </div>
       {/* Conditional rendering of BrezometerAQI component */}
       {openModel && isLoading && (
-        <div className="bg-gradient-to-r from-blue-300 to-blue-500 my-4 p-4 rounded-lg">
-          loading...
+        <div className="bg-sky-200  m-4 p-4 shadow-xl rounded-full">
+          <p className="text-center text-green-500 text-xl my-2 font-bold">
+            Fetching weather data... Please wait.☁️☁️☁️☁️
+          </p>
+          {/* <div className="flex items-center justify-center space-x-2">
+            <div className="w-4 h-4 rounded-full animate-pulse bg-blue-600"></div>
+            <div className="w-4 h-4 rounded-full animate-pulse bg-blue-600"></div>
+            <div className="w-4 h-4 rounded-full animate-pulse bg-blue-600"></div>
+          </div> */}
+          <div className="my-5 w-full  flex justify-center items-center">
+            <div className="flex  w-full items-center justify-center ">
+              <div className="flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-tr from-blue-500 to-sky-500 animate-spin">
+                <div className="h-9 w-9 rounded-full bg-gray-200"></div>
+              </div>
+            </div>
+          </div>
         </div>
       )}
       {openModel && !isLoading && aqiData && (
-        <div className="bg-gradient-to-r from-blue-300 to-blue-500 my-4 p-4 rounded-lg">
+        <div className="">
           <Brezzometeraqi
             aqiData={aqiData}
             city={city}

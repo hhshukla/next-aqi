@@ -57,20 +57,6 @@ interface HealthRecommendations {
   pregnantWomen?: string;
   children?: string;
 }
-//Weather Data
-// interface WeatherData {
-//   name?: string;
-//   main: number;
-//   temp: number;
-//   weather?: weather[];
-// }
-interface weather {
-  description?: string;
-}
-// interface Location {
-//   lat?: number;
-//   lng?: number;
-// }
 
 const Brezzometeraqi = ({
   aqiData,
@@ -90,85 +76,6 @@ const Brezzometeraqi = ({
   const [selectedTab, setSelectedTab] = useState<string | null>();
 
   const [error, setError] = useState<string | null>(null);
-  // const [city, setCity] = useState<string>("");
-
-  // const API_KEY = "a1fe25326ae4eee8d168af7a90cfb548";
-
-  // console.log(city, "city");
-  // console.log(aqiData, "aqiData");
-  // console.log(weatherData, "weatherData");
-
-  // const getBackgroundColor = () => {
-  //   if (aqiData && aqiData.indexes && aqiData?.indexes[1]?.category) {
-  //     const category = aqiData?.indexes[1]?.category?.toLowerCase();
-  //     if (category === "satisfactory air quality") {
-  //       return "bg-green-500"; // Good air quality
-  //     } else if (category === "moderate air quality") {
-  //       return "bg-yellow-500"; // Moderate air quality
-  //     } else if (category === "low air quality") {
-  //       return "bg-red-500"; // Low air quality
-  //     } else {
-  //       return "bg-gray-500"; // Default background color for other cases
-  //     }
-  //   }
-  //   return "bg-gray-500"; // Default background color if category is not available
-  // };
-
-  // const toggleModel = () => {
-  //   setOpenModel(!openModel);
-  // };
-  // const fetchAQIData = () => {
-  //   setError(null);
-  // };
-
-  // useEffect(() => {
-  //   if (navigator.geolocation) {
-  //     navigator.geolocation.getCurrentPosition(async (position) => {
-  //       const response = await fetch(
-  //         `https://api.openweathermap.org/data/2.5/weather?lat=${position.coords.latitude}&lon=${position.coords.longitude}&appid=${API_KEY}`
-  //       );
-  //       const AQIres = await fetch(
-  //         `https://airquality.googleapis.com/v1/currentConditions:lookup?key=${process.env.NEXT_PUBLIC_APP_GOOGLE_MAPS_API_KEY}`,
-  //         {
-  //           method: "POST",
-  //           headers: {
-  //             "Content-Type": "application/json",
-  //           },
-  //           body: JSON.stringify({
-  //             location: {
-  //               latitude: position.coords.latitude,
-  //               longitude: position.coords.longitude,
-  //             },
-  //             extraComputations: [
-  //               "HEALTH_RECOMMENDATIONS",
-  //               "DOMINANT_POLLUTANT_CONCENTRATION",
-  //               "POLLUTANT_CONCENTRATION",
-  //               "LOCAL_AQI",
-  //               "POLLUTANT_ADDITIONAL_INFO",
-  //             ],
-  //             languageCode: "en",
-  //           }),
-  //         }
-  //       );
-
-  //       if (!response.ok) {
-  //         throw new Error("Failed to fetch AQI data");
-  //       }
-  //       if (!AQIres.ok) {
-  //         throw new Error("Failed to fetch AQI data");
-  //       }
-
-  //       console.log("AQIres", AQIres);
-  //       console.log(response, "response");
-  //       const data = await response.json();
-  //       setCity(data.name);
-  //       setAqiData(await AQIres.json());
-  //       setWeatherData(data);
-  //       setAqiData(aqiData);
-  //       // setLoading(false);
-  //     });
-  //   }
-  // }, []);
 
   if (error) {
     return <div>Error: {error}</div>;
@@ -206,12 +113,12 @@ const Brezzometeraqi = ({
   return (
     <div>
       <div className="container mx-auto">
-        <div className={`m-4 p-4 rounded-md   cursor-pointer`}>
-          <div className="p-5 flex justify-center">
-            <div className="relative bg-white my-3 shadow-lg rounded-lg w-1/2 p-2">
+        <div className={`   p-4  cursor-pointer bg-green-500 mx-6 rounded-lg `}>
+          <div className="p-5 grid grid-cols-1  lg:grid-cols-3 gap-2">
+            <div className="relative bg-white my-3 shadow-lg rounded-lg w-full p-2 ">
               <div className="transition-opacity duration-200 ease-out-quart ">
                 {aqiData?.dateTime && (
-                  <h4 className="text-black font-bold p-3 rounded-xl flex flex-col">
+                  <h4 className="text-black font-bold p-1 rounded-xl flex flex-col">
                     DateTime:
                     <span className=" text-base">{formattedDateTime}</span>
                   </h4>
@@ -274,7 +181,7 @@ const Brezzometeraqi = ({
                           strokeWidth="10"
                           strokeDasharray="152.89084247470328, 458.6725274241098"
                           fill="none"
-                          style={{ transform: "translateY(-36.5px);" }}
+                          style={{ transform: "t ranslateY(-36.5px);" }}
                         ></circle>
                         <circle
                           r="73"
@@ -374,11 +281,11 @@ const Brezzometeraqi = ({
                         }}
                       >
                         <Image
+                          className="animate-ping"
                           src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iOSIgaGVpZ2h0PSI4IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxjaXJjbGUgY3g9IjQuNSIgY3k9IjQiIHI9IjMuNSIgZmlsbD0iI2ZmZiIgc3Ryb2tlPSIjMDAwIi8+PC9zdmc+"
                           alt="Air Quality Gauge Dot"
                           width={10}
                           height={10}
-                          style={{ width: "auto", height: "auto" }}
                         ></Image>
                       </div>
                     </div>
@@ -394,7 +301,7 @@ const Brezzometeraqi = ({
                       <div className="min w-8 h-6 -ml-3 text-center">0</div>
                       <div className="max w-8 h-6 -mr-3 text-center">500</div>
                     </div>
-                    <div className="text-black text-center text-base font-medium border-b-[1px]  border-gray-200">
+                    <div className="text-black text-center text-base font-medium ">
                       <p>{city}</p>
                       <div>
                         <p> {weatherData?.weather[0]?.description}</p>
@@ -407,52 +314,45 @@ const Brezzometeraqi = ({
                             aqiData?.indexes[1]?.aqi !== undefined &&
                             aqiData?.indexes[1]?.aqi}
                         </p>
-
-                        <button className="m-3 bg-black p-2 rounded-md text-white hover:text-white hover:bg-green-500">
-                          More Details:
-                        </button>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-        <div>
-          {aqiData && (
-            <div>
-              <div className="text-white bg-black shadow-lg p-4 rounded-lg my-4">
-                <p className="my-3">Pollutant</p>
-                <ul className="flex bg-white p-3 rounded-lg">
+
+            {aqiData && (
+              <div className="text-white bg-blue-500 shadow-lg p-4 rounded-lg my-2">
+                <p className="my-3 text-xl font-bold font-mono">Pollutant</p>
+                <ul className="lg:flex justify-between items-center bg-white  rounded-lg p-2">
                   {aqiData?.pollutants?.map((pollutant, index) => (
                     <li
                       key={index}
-                      className={`text-black mx-4 border-[1px] border-black p-3 rounded-lg cursor-pointer ${
+                      className={`text-black    border-[1px] border-black p-1 rounded-lg cursor-pointer my-2 ${
                         selectedPollutant === pollutant?.code
-                          ? "bg-black text-white"
+                          ? "border-2 border-blue-400 text-blue-500"
                           : "bg-white"
                       }`}
                       onClick={() =>
                         handlePollutantTabClick(pollutant?.code ?? "")
                       }
                     >
-                      {pollutant.displayName}
+                      {pollutant?.displayName}
                     </li>
                   ))}
                 </ul>
                 {selectedPollutant && (
-                  <div className="bg-white p-4 my-3 rounded-xl text-black">
-                    <h3 className="text-lg font-semibold">
+                  <div className="bg-white p-4 my-3  text-blue-500 font-medium rounded-md">
+                    <h3 className="text-lg ">
                       {
                         aqiData?.pollutants?.find(
                           (pollutant) => pollutant?.code === selectedPollutant
                         )?.displayName
-                      }{" "}
+                      }
                       Details
                     </h3>
                     <p>
-                      Full Name:{" "}
+                      Full Name:
                       {
                         aqiData?.pollutants?.find(
                           (pollutant) => pollutant?.code === selectedPollutant
@@ -460,12 +360,12 @@ const Brezzometeraqi = ({
                       }
                     </p>
                     <p>
-                      Concentration:{" "}
+                      Concentration:
                       {
                         aqiData?.pollutants?.find(
                           (pollutant) => pollutant?.code === selectedPollutant
                         )?.concentration?.value
-                      }{" "}
+                      }
                       {
                         aqiData?.pollutants?.find(
                           (pollutant) => pollutant?.code === selectedPollutant
@@ -473,7 +373,7 @@ const Brezzometeraqi = ({
                       }
                     </p>
                     <p>
-                      Sources:{" "}
+                      Sources:
                       {
                         aqiData?.pollutants?.find(
                           (pollutant) => pollutant?.code === selectedPollutant
@@ -481,7 +381,7 @@ const Brezzometeraqi = ({
                       }
                     </p>
                     <p>
-                      Effects:{" "}
+                      Effects:
                       {
                         aqiData?.pollutants?.find(
                           (pollutant) => pollutant?.code === selectedPollutant
@@ -491,111 +391,113 @@ const Brezzometeraqi = ({
                   </div>
                 )}
               </div>
-              <div className="text-white bg-black shadow-lg p-4 rounded-lg">
-                <p className="">Health Recommendation</p>
-                <div className="bg-white p-4 my-3 rounded-xl">
-                  <ul className="flex justify-center">
-                    <li
-                      className={`text-black mx-4 border-[1px] border-black p-3 rounded-lg cursor-pointer ${
-                        selectedTab === "generalPopulation"
-                          ? "bg-black text-white"
-                          : "bg-white"
-                      }`}
-                      onClick={() => handleTabClick("generalPopulation")}
-                    >
-                      <FaPeopleGroup />
-                    </li>
-                    <li
-                      className={`text-black mx-4 border-[1px] border-black p-3 rounded-lg cursor-pointer ${
-                        selectedTab === "elderly"
-                          ? "bg-black text-white"
-                          : "bg-white"
-                      }`}
-                      onClick={() => handleTabClick("elderly")}
-                    >
-                      <MdElderlyWoman />
-                    </li>
-                    <li
-                      className={`text-black mx-4 border-[1px] border-black p-3 rounded-lg cursor-pointer ${
-                        selectedTab === "lungDiseasePopulation"
-                          ? "bg-black text-white"
-                          : "bg-white"
-                      }`}
-                      onClick={() => handleTabClick("lungDiseasePopulation")}
-                    >
-                      <FaLungsVirus />
-                    </li>
-                    <li
-                      className={`text-black mx-4 border-[1px] border-black p-3 rounded-lg cursor-pointer ${
-                        selectedTab === "heartDiseasePopulation"
-                          ? "bg-black text-white"
-                          : "bg-white"
-                      }`}
-                      onClick={() => handleTabClick("heartDiseasePopulation")}
-                    >
-                      <FaHeart />{" "}
-                    </li>
-                    <li
-                      className={`text-black mx-4 border-[1px] border-black p-3 rounded-lg cursor-pointer ${
-                        selectedTab === "athletes"
-                          ? "bg-black text-white"
-                          : "bg-white"
-                      }`}
-                      onClick={() => handleTabClick("athletes")}
-                    >
-                      <FaThLarge />
-                    </li>
-                    <li
-                      className={`text-black mx-4 border-[1px] border-black p-3 rounded-lg cursor-pointer ${
-                        selectedTab === "pregnantWomen"
-                          ? "bg-black text-white"
-                          : "bg-white"
-                      }`}
-                      onClick={() => handleTabClick("pregnantWomen")}
-                    >
-                      <MdPregnantWoman />
-                    </li>
-                    <li
-                      className={`text-black mx-4 border-[1px] border-black p-3 rounded-lg cursor-pointer ${
-                        selectedTab === "children"
-                          ? "bg-black text-white"
-                          : "bg-white"
-                      }`}
-                      onClick={() => handleTabClick("children")}
-                    >
-                      <FaChildReaching />
-                    </li>
-                  </ul>
-                  {selectedTab && (
-                    <div className="bg-white p-4 my-3 rounded-xl text-black">
-                      <h3 className="text-lg font-semibold">
-                        {selectedTab === "generalPopulation"
-                          ? "General Population"
-                          : ""}
-                        {selectedTab === "elderly" ? "elderly" : ""}
-                        {selectedTab === "lungDiseasePopulation"
-                          ? "lungDiseasePopulation"
-                          : ""}
-                        {selectedTab === "heartDiseasePopulation"
-                          ? "heartDiseasePopulation"
-                          : ""}
-                        {selectedTab === "athletes" ? "athletes" : ""}
-                        {selectedTab === "pregnantWomen" ? "pregnantWomen" : ""}
-                        {selectedTab === "children" ? "children" : ""}
-                      </h3>
-                      <p>
-                        {aqiData?.healthRecommendations && selectedTab
-                          ? aqiData?.healthRecommendations[
-                              selectedTab as keyof HealthRecommendations
-                            ]
-                          : ""}
-                      </p>
-                    </div>
-                  )}
-                </div>
+            )}
+            {aqiData && (
+              <div className="text-white bg-blue-500 shadow-lg p-4 rounded-lg my-2">
+                <p className="my-3 text-xl font-bold font-mono">
+                  Health Recoomendation
+                </p>
+                <ul className="lg:flex justify-between items-center bg-white  rounded-lg p-2">
+                  <li
+                    className={`text-black    border-[1px] border-black p-1 my-2 rounded-lg cursor-pointer ${
+                      selectedTab === "generalPopulation"
+                        ? "border-2 border-blue-400 text-blue-500"
+                        : "bg-white"
+                    }`}
+                    onClick={() => handleTabClick("generalPopulation")}
+                  >
+                    <FaPeopleGroup />
+                  </li>
+                  <li
+                    className={`text-black    border-[1px] border-black p-1 my-2 rounded-lg cursor-pointer ${
+                      selectedTab === "elderly"
+                        ? "border-2 border-blue-400 text-blue-500"
+                        : "bg-white"
+                    }`}
+                    onClick={() => handleTabClick("elderly")}
+                  >
+                    <MdElderlyWoman />
+                  </li>
+                  <li
+                    className={`text-black    border-[1px] border-black p-1 my-2 rounded-lg cursor-pointer ${
+                      selectedTab === "lungDiseasePopulation"
+                        ? "border-2 border-blue-400 text-blue-500"
+                        : "bg-white"
+                    }`}
+                    onClick={() => handleTabClick("lungDiseasePopulation")}
+                  >
+                    <FaLungsVirus />
+                  </li>
+                  <li
+                    className={`text-black    border-[1px] border-black p-1 my-2 rounded-lg cursor-pointer ${
+                      selectedTab === "heartDiseasePopulation"
+                        ? "border-2 border-blue-400 text-blue-500"
+                        : "bg-white"
+                    }`}
+                    onClick={() => handleTabClick("heartDiseasePopulation")}
+                  >
+                    <FaHeart />
+                  </li>
+                  <li
+                    className={`text-black    border-[1px] border-black p-1 my-2 rounded-lg cursor-pointer ${
+                      selectedTab === "athletes"
+                        ? "border-2 border-blue-400 text-blue-500"
+                        : "bg-white"
+                    }`}
+                    onClick={() => handleTabClick("athletes")}
+                  >
+                    <FaThLarge />
+                  </li>
+                  <li
+                    className={`text-black    border-[1px] border-black p-1 my-2 rounded-lg cursor-pointer ${
+                      selectedTab === "pregnantWomen"
+                        ? "border-2 border-blue-400 text-blue-500"
+                        : "bg-white"
+                    }`}
+                    onClick={() => handleTabClick("pregnantWomen")}
+                  >
+                    <MdPregnantWoman />
+                  </li>
+                  <li
+                    className={`text-black    border-[1px] border-black p-1 my-2 rounded-lg cursor-pointer ${
+                      selectedTab === "children"
+                        ? "border-2 border-blue-400 text-blue-500"
+                        : "bg-white"
+                    }`}
+                    onClick={() => handleTabClick("children")}
+                  >
+                    <FaChildReaching />
+                  </li>
+                </ul>
+                {selectedTab && (
+                  <div className="bg-white p-4 my-3 rounded-xl text-blue-500">
+                    <h3 className="text-lg font-semibold">
+                      {selectedTab === "generalPopulation"
+                        ? "General Population"
+                        : ""}
+                      {selectedTab === "elderly" ? "elderly" : ""}
+                      {selectedTab === "lungDiseasePopulation"
+                        ? "lungDiseasePopulation"
+                        : ""}
+                      {selectedTab === "heartDiseasePopulation"
+                        ? "heartDiseasePopulation"
+                        : ""}
+                      {selectedTab === "athletes" ? "athletes" : ""}
+                      {selectedTab === "pregnantWomen" ? "pregnantWomen" : ""}
+                      {selectedTab === "children" ? "children" : ""}
+                    </h3>
+                    <p>
+                      {aqiData?.healthRecommendations && selectedTab
+                        ? aqiData?.healthRecommendations[
+                            selectedTab as keyof HealthRecommendations
+                          ]
+                        : ""}
+                    </p>
+                  </div>
+                )}
               </div>
-            </div>
-          )}
+            )}
+          </div>
         </div>
 
         {error && <p className="text-red-600 mb-4">Error: {error}</p>}
