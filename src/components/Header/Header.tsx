@@ -122,9 +122,9 @@ const Header = () => {
     if (aqiData && aqiData.indexes && aqiData?.indexes[1]?.category) {
       const category = aqiData?.indexes[1]?.category?.toLowerCase();
       if (category === "satisfactory air quality") {
-        return "bg-green-500 "; // satisfactory air  quality
+        return "bg-green-500 bg-opacity-25"; // satisfactory air  quality
       } else if (category === "moderate air quality") {
-        return "bg-yellow-500 "; // Moderate air quality
+        return "bg-yellow-300  "; // Moderate air quality
       } else if (category === "low air quality") {
         return "bg-red-500"; // Low air quality
       } else {
@@ -137,8 +137,8 @@ const Header = () => {
   return (
     <div>
       <div className="bg-white  m-5 p-5  rounded-xl">
-        <div className="flex  items-center justify-between">
-          <div className="flex-1 md:flex md:items-center md:gap-12 cursor-pointer">
+        <div className="md:flex  items-center justify-between">
+          <div className=" md:flex md:items-center md:gap-12 cursor-pointer">
             <Link className="block text-teal-600" href="/">
               <Image
                 src={
@@ -151,18 +151,14 @@ const Header = () => {
             </Link>
           </div>
 
-          <div className="md:flex md:items-center md:gap-12">
-            <nav aria-label="Global" className="hidden md:block">
+          <div className="flex md:items-center my-4 md:gap-12">
+            <nav aria-label="Global" className="">
               <ul className="flex items-center gap-6 text-sm">
                 <li>
-                  <button className="bg-gradient-to-r from-green-500 to-green-700 text-white font-semibold rounded-md p-1">
+                  <button className=" border-green-400 border-2 text-blue-500 font-semibold rounded-md">
                     <div
                       className={` p-2 rounded-md   cursor-pointer ${getBackgroundColor()}`}
                     >
-                      <span className="relative flex h-3 w-3">
-                        <span className="animate-ping absolute inset-0 inline-flex h-full w-full rounded-full bg-white"></span>
-                        <span className="relative inline-flex rounded-full h-3 w-3 bg-green-300"></span>
-                      </span>
                       <div className="flex justify-center items-center">
                         <div className="mx-5">
                           <div className="flex justify-between">
@@ -176,9 +172,10 @@ const Header = () => {
                             <div className="flex flex-col text-start mx-2">
                               <h2 className="text-xl">{weatherData?.name}</h2>
 
-                              <h3 className="text-white text-xl font-medium">
-                                Today AQI of {city} is:
+                              <h3 className="text-black text-xl font-medium">
+                                AQI is {""}
                                 {aqiData?.indexes && aqiData?.indexes[1]?.aqi}
+                                today.
                               </h3>
                             </div>
 
