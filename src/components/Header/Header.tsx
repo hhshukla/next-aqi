@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import { FaArrowCircleRight } from "react-icons/fa";
 import Brezzometeraqi from "../Brezzometer-aqi/Brezzometer-aqi";
 import Image from "next/image";
-import styles from "../../styles/button.module.css";
 
 interface AqiData {
   dateTime?: string;
@@ -119,10 +118,9 @@ const Header = () => {
   }, []);
 
   //weather images
-  const clearSkyImage = "/Images/amcharts_weather_icons_1.0.0/animated/day.svg";
-  const cloudyImage = "/Images/cloudy.jpg";
-  const rainyImage = "/Images/rainy.jpg";
-  const smokeImage = "/Images/cloudy-day.png";
+  // const clearSkyImage = "/Images/amcharts_weather_icons_1.0.0/animated/day.svg";
+  // const rainyImage = "/Images/rainy.jpg";
+  // const smokeImage = "/Images/cloudy-day.png";
 
   const getBackgroundColor = () => {
     if (aqiData && aqiData.indexes && aqiData.indexes[1]?.category) {
@@ -150,6 +148,9 @@ const Header = () => {
       }
 
       if (category === "satisfactory air quality") {
+        image =
+          "/Images/cute-boy-giving-thumb-up_70172-768-removebg-preview.png";
+        animateimage = "satisfied-child-animation.gif"; // Assuming there's an animation for a happy child
         return {
           backgroundColor:
             "bg-green-200 bg-opacity-25 border-2 border-green-500",
@@ -157,14 +158,15 @@ const Header = () => {
           animateimage: animateimage,
         };
       } else if (category === "moderate air quality") {
+        image = "/Images/hand-drawn-flat-design-shrug-illustration/6821180.jpg";
         return {
-          image: "/Images/reshot-icon-face-F7VRNJ2HZU.svg",
+          image: image,
           backgroundColor:
             "bg-yellow-300 bg-opacity-30 border-2 border-yellow-500",
-          // image: image,
           animateimage: animateimage,
         };
       } else if (category === "low air quality") {
+        image = "/Images/school-children-greeting-new-normal/4445965.jpg"; // Path to the image for the ill child
         return {
           backgroundColor: "bg-red-500 border-2 border-yellow-500",
           image: image,
@@ -176,10 +178,38 @@ const Header = () => {
     }
     return { backgroundColor: "bg-sky-300" }; // Default background color if category is not available
   };
+  const happyImage =
+    "/Images/Icons/cute-boy-giving-thumb-up_70172-768-removebg-preview.png";
+  const mediumIcon =
+    "/Images/Icons/cute-boy-giving-thumb-up_70172-768-removebg-preview.png";
+  const seriousIcon = "/Images/Icons/03.png";
+  const sadIcon = "/Images/Icons/04.png";
+  const badIcon = "/Images/Icons/05.png";
+  const verybadIcon = "/Images/Icons/06.png";
+
+  const getAqiIcon = (aqi: number): string => {
+    if (aqi >= 0 && aqi <= 50) {
+      return happyImage;
+    } else if (aqi > 51 && aqi <= 100) {
+      return mediumIcon;
+    } else if (aqi > 101 && aqi <= 150) {
+      return seriousIcon;
+    } else if (aqi > 151 && aqi <= 200) {
+      return sadIcon;
+    } else if (aqi > 201 && aqi <= 300) {
+      return badIcon;
+    } else if (aqi > 301 && aqi <= 500) {
+      return verybadIcon;
+    } else {
+      return verybadIcon;
+    }
+  };
+  const aqiValue = aqiData && aqiData?.indexes && aqiData?.indexes[1]?.aqi;
+  const aqiIconSrc = getAqiIcon(typeof aqiValue === "number" ? aqiValue : 0);
 
   return (
     <div>
-      <div className="bg-white m-5 p-5 rounded-xl">
+      <div className="bg-white   px-5 rounded-xl">
         <div className="md:flex items-center justify-between">
           <div className="md:flex md:items-center md:gap-12 cursor-pointer">
             <Link className="block text-teal-600" href="/">
@@ -194,43 +224,57 @@ const Header = () => {
             </Link>
           </div>
 
-          <div className="flex  my-4 md:gap-12">
-            <div className="flex items-center gap-6 text-sm">
-              <div className="flex h-40 w-full flex-row items-center justify-center">
-                <button className="animate-border inline-block rounded-2xl p-2 bg-white bg-gradient-to-r from-gray-200 via-gray-300 to-gray-400 bg-[length:400%_400%]">
-                  <span className="block rounded-xl bg-white font-bold text-white">
-                    <div
-                      className={` rounded-xl p-4 cursor-pointer flex justify-between items-center  ${
-                        getBackgroundColor().backgroundColor
-                      }  `}
-                    >
-                      <h3 className="text-blue-500  mx-2 text-6xl font-bold flex">
-                        AQI {""}
-                        {aqiData?.indexes && aqiData?.indexes[1]?.aqi}
-                        <span style={{ fontSize: "24px" }}>
-                          {aqiData &&
-                            aqiData?.indexes != undefined &&
-                            aqiData?.indexes[1]?.category
-                              ?.toLowerCase()
-                              .includes("moderate air quality") && (
-                              <Image
-                                src={getBackgroundColor().image}
-                                width={50}
-                                height={50}
-                                alt="Air Quality Image"
-                                className="mx-2"
-                              />
-                            )}
-                        </span>
-                      </h3>
-                      <div className="flex flex-col mx-4 text-blue-500">
-                        <div className="text-xl flex">
-                          {weatherData?.name} {""}
-                        </div>
-                        <p className="text-4xl flex justify-center items-center">
-                          {weatherData?.main?.temp.toFixed(0) - 273}
-                          °C
-                          <span className="mx-1">
+          <div className="relative pt-5 mt-5">
+            <div className="absolute -top-1 -left-4  flex justify-center items-center">
+              {aqiData &&
+                aqiData?.indexes != undefined &&
+                aqiData?.indexes[1]?.category
+                  ?.toLowerCase()
+                  .includes("satisfactory air quality") && (
+                  <Image
+                    src={getBackgroundColor().image}
+                    width={50}
+                    height={50}
+                    alt="Air Quality Image"
+                    className="mx-2 text-black"
+                  />
+                )}
+            </div>
+            <div className="flex h-40 w-full flex-row items-center justify-center relative z-20">
+              <button className="animate-border inline-block rounded-2xl p-2 bg-white bg-gradient-to-r from-gray-200 via-gray-300 to-gray-400 bg-[length:400%_400%]">
+                <span className="block rounded-xl bg-white font-bold text-white">
+                  <div
+                    className={` rounded-xl p-1 cursor-pointer flex justify-between items-center  ${
+                      getBackgroundColor().backgroundColor
+                    }  `}
+                  >
+                    <h3 className="text-blue-500  mx-2 text-5xl font-semibold ">
+                      AQI {""}
+                      {aqiData?.indexes && aqiData?.indexes[1]?.aqi}
+                      {/* <span style={{ fontSize: "24px" }}>
+                            {aqiData &&
+                              aqiData?.indexes != undefined &&
+                              aqiData?.indexes[1]?.category
+                                ?.toLowerCase()
+                                .includes("moderate air quality") && (
+                                <Image
+                                  src={getBackgroundColor().image}
+                                  width={50}
+                                  height={50}
+                                  alt="Air Quality Image"
+                                  className="mx-2"
+                                />
+                              )}
+                          </span> */}
+                    </h3>
+                    <div className="flex flex-col mx-4 text-blue-500">
+                      <div className="text-xl flex">
+                        {weatherData?.name} {""}
+                      </div>
+                      <p className="text-4xl flex justify-center items-center">
+                        {weatherData?.main?.temp.toFixed(0) - 273}
+                        °C
+                        {/* <span className="mx-1">
                             {weatherData?.weather[0]?.description
                               .toLowerCase()
                               .includes("clear sky") && (
@@ -262,17 +306,20 @@ const Header = () => {
                                 alt="Rainy"
                               />
                             )}
-                          </span>
-                        </p>
-                      </div>
+                          </span> */}
+                      </p>
                     </div>
-                  </span>
-                </button>
-              </div>
+                    <div onClick={toggleModel} className="flex items-center">
+                      <FaArrowCircleRight className="text-2xl mx-2 my-1 bg-blue-500 rounded-full" />
+                    </div>
+                  </div>
+                </span>
+              </button>
             </div>
           </div>
         </div>
       </div>
+
       {/* Conditional rendering of BrezometerAQI component */}
       {openModel && aqiData && (
         <div className="">

@@ -20,6 +20,28 @@ const config: Config = {
         border: "border 4s ease infinite",
       },
 
+      //   border: {
+      //     "0%, 100%": { backgroundPosition: "0% 50%" },
+      //     "50%": { backgroundPosition: "100% 50%" },
+      //   },
+      //   animateBorder: {
+      //     "0%": {
+      //       borderImageSlice: "1",
+      //     },
+      //     "50%": {
+      //       borderImageSlice: "2",
+      //     },
+      //     "100%": {
+      //       borderImageSlice: "1",
+      //     },
+      //   },
+      //   "border-spin": {
+      //     "100%": {
+      //       transform: "rotate(-360deg)",
+      //     },
+      //   },
+      // },
+
       keyframes: {
         border: {
           "0%, 100%": { backgroundPosition: "0% 50%" },
