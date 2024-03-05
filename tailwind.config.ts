@@ -16,41 +16,14 @@ const config: Config = {
       transitiontimingfunction: {
         "transition-of-Indicator": "cubic-bezier(0.165, 0.84, 0.44, 1)",
       },
-      // animation: {
-      //   border: "border 4s ease infinite",
-      // },
-      // keyframes: {
-      //   border: {
-      //     "0%, 100%": { backgroundPosition: "0% 50%" },
-      //     "50%": { backgroundPosition: "100% 50%" },
-      //   },
-      //   animateBorder: {
-      //     "0%": {
-      //       borderImageSlice: "1",
-      //     },
-      //     "50%": {
-      //       borderImageSlice: "2",
-      //     },
-      //     "100%": {
-      //       borderImageSlice: "1",
-      //     },
-      //   },
-      //   "border-spin": {
-      //     "100%": {
-      //       transform: "rotate(-360deg)",
-      //     },
-      //   },
-      // },
-      animation1: {
-        "border-spin": "border-spin 7s linear infinite",
-      },
       animation: {
-        "animate-border": "animateBorder 2s ease infinite",
+        border: "border 4s ease infinite",
       },
+
       keyframes: {
-        animateBorder: {
-          "0%, 100%": { borderColor: "transparent" },
-          "50%": { borderColor: "blue-500" },
+        border: {
+          "0%, 100%": { backgroundPosition: "0% 50%" },
+          "50%": { backgroundPosition: "100% 50%" },
         },
       },
     },
