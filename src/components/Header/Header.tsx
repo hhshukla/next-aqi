@@ -115,6 +115,8 @@ const Header = () => {
         if (aqiData) setIsLoading(false);
         console.log(aqiData, "aqidata");
       });
+    } else {
+      console.log("didnot call api");
     }
   }, []);
 
@@ -220,6 +222,8 @@ const Header = () => {
             aqiData={aqiData}
             city={city}
             weatherData={weatherData}
+            openModel={openModel}
+            setOpenModel={setOpenModel}
           />
         </div>
       )}
