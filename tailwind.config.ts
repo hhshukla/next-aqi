@@ -19,20 +19,12 @@ const config: Config = {
       animation: {
         border: "border 4s ease infinite",
       },
+
       keyframes: {
         border: {
           "0%, 100%": { backgroundPosition: "0% 50%" },
           "50%": { backgroundPosition: "100% 50%" },
         },
-      },
-      keyframesofBlinkingBg: {
-        blinkingBg: {
-          "0%, 100%": { backgroundColor: "#ef4444" },
-          "50%": { backgroundColor: "#fee2e2" },
-        },
-      },
-      animationofblinkingBg: {
-        blinkingBg: "blinkingBg 2s ease-in-out infinite",
       },
     },
   },
