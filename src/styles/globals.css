@@ -18,16 +18,79 @@
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
+  background: linear-gradient(to bottom,
       transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+      rgb(var(--background-end-rgb))) rgb(var(--background-start-rgb));
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+
+  .card-wrapper {
+    @apply relative overflow-hidden rounded-2xl bg-gradient-to-b from-slate-700 to-slate-800;
+  }
+
+  /* Gradient */
+  .card-wrapper::before {
+    background: conic-gradient(rgba(244, 114, 182, 0.4) 0deg,
+        rgba(192, 132, 252, 0.4) 0deg,
+        transparent 80deg);
+
+    @apply absolute left-[-25%] top-[-25%] h-[150%] w-[150%] animate-border-spin content-[''];
+  }
+
+  /* Body */
+  .card-content {
+    @apply absolute left-[1px] top-[1px] h-[calc(100%-2px)] w-[calc(100%-2px)] rounded-2xl bg-gradient-to-b from-slate-800 to-slate-900;
+  }
+
+  button.aqi-classname {
+    position: relative;
+    height: 60px;
+    width: 180px;
+    border-radius: 10px;
+    z-index: 3;
+    background-color: aquamarine;
+  }
+
+  button.aqi-classname::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    z-index: 1;
+    background: conic-gradient(from var(--gradient-angle),
+        #a8ef80,
+        #2d8f85,
+        #b1c5c6,
+        #2d8f85,
+        #a8ef80);
+    border-radius: inherit;
+    animation: rotation 10s linear infinite;
+  }
+
+  button.aqi-classname::before {
+    content: "";
+    height: calc(90% - 8px);
+    width: 90%;
+    top: 50%;
+    /* transform: ; */
+    transform: translate(-50%, -50%);
+    position: absolute;
+    border-radius: inherit;
+    z-index: 2;
+    background-color: white;
+  }
+
+  @keyframes rotation {
+    0% {
+      --gradient-angle: 0deg;
+    }
+
+    100% {
+      --gradient-angle: 360deg;
+    }
   }
 }

@@ -1,9 +1,9 @@
 import Link from "next/link";
 import React, { useState } from "react";
 import { FaArrowCircleRight } from "react-icons/fa";
-import { MdOutlineWbSunny } from "react-icons/md";
 import Brezzometeraqi from "../Brezzometer-aqi/Brezzometer-aqi";
 import Image from "next/image";
+import styles from "../../styles/button.module.css";
 
 interface AqiData {
   dateTime?: string;
@@ -118,27 +118,69 @@ const Header = () => {
     }
   }, []);
 
+  //weather images
+  const clearSkyImage = "/Images/amcharts_weather_icons_1.0.0/animated/day.svg";
+  const cloudyImage = "/Images/cloudy.jpg";
+  const rainyImage = "/Images/rainy.jpg";
+  const smokeImage = "/Images/cloudy-day.png";
+
   const getBackgroundColor = () => {
-    if (aqiData && aqiData.indexes && aqiData?.indexes[1]?.category) {
-      const category = aqiData?.indexes[1]?.category?.toLowerCase();
+    if (aqiData && aqiData.indexes && aqiData.indexes[1]?.category) {
+      const category = aqiData.indexes[1].category.toLowerCase();
+      let image;
+      let animateimage;
+
+      // Determine image based on weather description
+      if (weatherData) {
+        const weatherDescription =
+          weatherData.weather[0]?.description.toLowerCase();
+        if (weatherDescription.includes("clear sky")) {
+          image = "/Images/reshot-icon-smile-9E63DBP5AS.svg";
+          animateimage = "/Images/3u1o_io5j_230530.svg";
+        } else if (weatherDescription.includes("cloudy")) {
+          image = "/Images/cloudy-image.svg"; // Add the path to your cloudy image
+          animateimage = "/Images/cloudy-animation.svg"; // Add the path to your cloudy animation
+        } else if (weatherDescription.includes("rain")) {
+          image = "/Images/rainy-image.svg"; // Add the path to your rainy image
+          animateimage = "/Images/rainy-animation.svg"; // Add the path to your rainy animation
+        } else {
+          image = "/Images/default-image.svg"; // Default image for other weather conditions
+          animateimage = "/Images/default-animation.svg"; // Default animation for other weather conditions
+        }
+      }
+
       if (category === "satisfactory air quality") {
-        return "bg-green-500 bg-opacity-25"; // satisfactory air  quality
+        return {
+          backgroundColor:
+            "bg-green-200 bg-opacity-25 border-2 border-green-500",
+          image: image,
+          animateimage: animateimage,
+        };
       } else if (category === "moderate air quality") {
-        return "bg-yellow-300  "; // Moderate air quality
+        return {
+          backgroundColor:
+            "bg-yellow-300 bg-opacity-50 border-2 border-yellow-500",
+          image: image,
+          animateimage: animateimage,
+        };
       } else if (category === "low air quality") {
-        return "bg-red-500"; // Low air quality
+        return {
+          backgroundColor: "bg-red-500 border-2 border-yellow-500",
+          image: image,
+          animateimage: animateimage,
+        };
       } else {
-        return "bg-sky-300"; // Default background color for other cases
+        return { backgroundColor: "bg-sky-300" };
       }
     }
-    return "bg-sky-300"; // Default background color if category is not available
+    return { backgroundColor: "bg-sky-300" }; // Default background color if category is not available
   };
 
   return (
     <div>
-      <div className="bg-white  m-5 p-5  rounded-xl">
-        <div className="md:flex  items-center justify-between">
-          <div className=" md:flex md:items-center md:gap-12 cursor-pointer">
+      <div className="bg-white m-5 p-5 rounded-xl">
+        <div className="md:flex items-center justify-between">
+          <div className="md:flex md:items-center md:gap-12 cursor-pointer">
             <Link className="block text-teal-600" href="/">
               <Image
                 src={
@@ -151,30 +193,116 @@ const Header = () => {
             </Link>
           </div>
 
-          <div className="flex md:items-center my-4 md:gap-12">
-            <nav aria-label="Global" className="">
-              <ul className="flex items-center gap-6 text-sm">
-                <li>
-                  <button className=" border-green-400 border-2 text-blue-500 font-semibold rounded-md">
+          <div className="flex  my-4 md:gap-12">
+            <ul className="flex items-center gap-6 text-sm">
+              <li>
+                <button
+                  className={`animate-border inline-block rounded-xl bg-white bg-gradient-to-r from-blue-500 via-white to-blue-500 bg-[length:400%_400%] ${styles.btnHover}`}
+                >
+                  <div className="rounded-xl bg-white bg-gradient-to-r from-blue-500 via-white to-blue-500 bg-[length:400%_400%] border-2 border-transparent">
                     <div
-                      className={` p-2 rounded-md   cursor-pointer ${getBackgroundColor()}`}
+                      className={`rounded-xl p-4 cursor-pointer ${
+                        getBackgroundColor().backgroundColor
+                      }  `}
                     >
                       <div className="flex justify-center items-center">
                         <div className="mx-5">
-                          <div className="flex justify-between">
+                          <div className="flex justify-between items-center">
                             {weatherData && (
-                              <div className="m-2">
-                                <h3 className="text-blue-500 text-6xl font-bold">
+                              <div className="m-2 flex justify-center items-center">
+                                {weatherData?.weather[0]?.description
+                                  .toLowerCase()
+                                  .includes("clear sky") && (
+                                  <Image
+                                    src={getBackgroundColor().animateimage}
+                                    width={50}
+                                    height={50}
+                                    alt="Air Quality Image"
+                                    className="mx-2"
+                                  />
+                                )}
+                                {weatherData?.weather[0]?.description
+                                  .toLowerCase()
+                                  .includes("cloudy") && (
+                                  <Image
+                                    src={getBackgroundColor().animateimage}
+                                    width={50}
+                                    height={50}
+                                    alt="Air Quality Image"
+                                    className="mx-2"
+                                  />
+                                )}
+                                {weatherData?.weather[0]?.description
+                                  .toLowerCase()
+                                  .includes("over cloudy") && (
+                                  <Image
+                                    src={getBackgroundColor().animateimage}
+                                    width={50}
+                                    height={50}
+                                    alt="Air Quality Image"
+                                    className="mx-2"
+                                  />
+                                )}
+                                <h3 className="text-blue-500  mx-2 text-6xl font-bold">
                                   AQI {""}
                                   {aqiData?.indexes && aqiData?.indexes[1]?.aqi}
                                 </h3>
                               </div>
                             )}
                             <div className="flex flex-col text-start mx-2">
-                              <h2 className="text-xl">{weatherData?.name}</h2>
+                              <div className="text-xl flex">
+                                {weatherData?.name} {""}
+                                <span style={{ fontSize: "24px" }}>
+                                  {weatherData?.weather[0]?.description
+                                    .toLowerCase()
+                                    .includes("clear sky") && (
+                                    <Image
+                                      src={getBackgroundColor().image}
+                                      width={30}
+                                      height={30}
+                                      alt="Air Quality Image"
+                                      className="mx-2"
+                                    />
+                                  )}
+                                </span>
+                              </div>
 
-                              <p className="text-4xl">
-                                {weatherData?.main?.temp.toFixed(0) - 273}°C
+                              <p className="text-4xl flex justify-center items-center">
+                                {weatherData?.main?.temp.toFixed(0) - 273}
+                                °C
+                                <span className="mx-1">
+                                  {weatherData?.weather[0]?.description
+                                    .toLowerCase()
+                                    .includes("clear sky") && (
+                                    <Image
+                                      src={clearSkyImage}
+                                      width={60}
+                                      height={60}
+                                      alt="Clear Sky"
+                                      style={{ fontSize: "44px" }}
+                                    />
+                                  )}
+                                  {weatherData?.weather[0]?.description
+                                    .toLowerCase()
+                                    .includes("smoke") && (
+                                    <Image
+                                      src={smokeImage}
+                                      width={50}
+                                      height={50}
+                                      alt="smoke"
+                                    />
+                                  )}
+                                  {weatherData?.weather[0]?.description
+                                    .toLowerCase()
+                                    .includes("rain") && (
+                                    <Image
+                                      src={rainyImage}
+                                      width={50}
+                                      height={50}
+                                      alt="Rainy"
+                                    />
+                                  )}
+                                </span>
                               </p>
                             </div>
 
@@ -182,38 +310,155 @@ const Header = () => {
                               onClick={toggleModel}
                               className="flex items-center"
                             >
-                              <FaArrowCircleRight className="text-2xl   mx-2 my-1 rounded-full" />
+                              <FaArrowCircleRight className="text-2xl mx-2 my-1 rounded-full" />
                             </div>
                           </div>
-                          {/* <div className="my-2">
-                            <MdOutlineWbSunny className="w-5 h-5" />
-                          </div> */}
                         </div>
                       </div>
                     </div>
-                  </button>
-                </li>
-              </ul>
-            </nav>
+                  </div>
+                </button>
+
+                {/* <div className="flex h-40 w-full flex-row items-center justify-center">
+                    <button className="animate-border inline-block rounded-xl bg-white bg-gradient-to-r from-blue-500 via-white to-blue-500 bg-[length:400%_400%]">
+                      <span>
+                        <button className="text-blue-500 font-semibold border-gray-200 border-2 rounded-xl ">
+                          <div
+                            className={`rounded-xl p-4 cursor-pointer ${
+                              getBackgroundColor().backgroundColor
+                            }  `}
+                          >
+                            <div className="flex justify-center items-center">
+                              <div className="mx-5">
+                                <div className="flex justify-between items-center">
+                                  {weatherData && (
+                                    <div className="m-2 flex justify-center items-center">
+                                      {weatherData?.weather[0]?.description
+                                        .toLowerCase()
+                                        .includes("clear sky") && (
+                                        <Image
+                                          src={
+                                            getBackgroundColor().animateimage
+                                          }
+                                          width={50}
+                                          height={50}
+                                          alt="Air Quality Image"
+                                          className="mx-2 bg-transparent"
+                                        />
+                                      )}
+                                      {weatherData?.weather[0]?.description
+                                        .toLowerCase()
+                                        .includes("cloudy") && (
+                                        <Image
+                                          src={
+                                            getBackgroundColor().animateimage
+                                          }
+                                          width={50}
+                                          height={50}
+                                          alt="Air Quality Image"
+                                          className="mx-2"
+                                        />
+                                      )}
+                                      {weatherData?.weather[0]?.description
+                                        .toLowerCase()
+                                        .includes("over cloudy") && (
+                                        <Image
+                                          src={
+                                            getBackgroundColor().animateimage
+                                          }
+                                          width={50}
+                                          height={50}
+                                          alt="Air Quality Image"
+                                          className="mx-2"
+                                        />
+                                      )}
+                                      <h3 className="text-blue-500  mx-2 text-6xl font-bold">
+                                        AQI {""}
+                                        {aqiData?.indexes &&
+                                          aqiData?.indexes[1]?.aqi}
+                                      </h3>
+                                    </div>
+                                  )}
+                                  <div className="flex flex-col text-start mx-2">
+                                    <div className="text-xl flex">
+                                      {weatherData?.name} {""}
+                                      <span style={{ fontSize: "24px" }}>
+                                        {weatherData?.weather[0]?.description
+                                          .toLowerCase()
+                                          .includes("clear sky") && (
+                                          <Image
+                                            src={getBackgroundColor().image}
+                                            width={30}
+                                            height={30}
+                                            alt="Air Quality Image"
+                                            className="mx-2"
+                                          />
+                                        )}
+                                        {console.log(
+                                          getBackgroundColor().image
+                                        )}
+                                      </span>
+                                    </div>
+
+                                    <p className="text-4xl flex justify-center items-center">
+                                      {weatherData?.main?.temp.toFixed(0) - 273}
+                                      °C
+                                      <span className="mx-1">
+                                        {weatherData?.weather[0]?.description
+                                          .toLowerCase()
+                                          .includes("clear sky") && (
+                                          <Image
+                                            src={clearSkyImage}
+                                            width={60}
+                                            height={60}
+                                            alt="Clear Sky"
+                                            style={{ fontSize: "44px" }}
+                                          />
+                                        )}
+                                        {weatherData?.weather[0]?.description
+                                          .toLowerCase()
+                                          .includes("smoke") && (
+                                          <Image
+                                            src={smokeImage}
+                                            width={50}
+                                            height={50}
+                                            alt="smoke"
+                                          />
+                                        )}
+                                        {weatherData?.weather[0]?.description
+                                          .toLowerCase()
+                                          .includes("rain") && (
+                                          <Image
+                                            src={rainyImage}
+                                            width={50}
+                                            height={50}
+                                            alt="Rainy"
+                                          />
+                                        )}
+                                      </span>
+                                    </p>
+                                  </div>
+
+                                  <div
+                                    onClick={toggleModel}
+                                    className="flex items-center"
+                                  >
+                                    <FaArrowCircleRight className="text-2xl mx-2 my-1 rounded-full" />
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </button>
+                      </span>
+                    </button>
+                  </div> */}
+              </li>
+            </ul>
           </div>
         </div>
       </div>
       {/* Conditional rendering of BrezometerAQI component */}
-      {/* {openModel && isLoading && (
-        <div className="bg-sky-200  m-4 p-4 shadow-xl rounded-full">
-          <p className="text-center text-green-500 text-xl my-2 font-bold">
-            Fetching weather data... Please wait.☁️☁️☁️☁️
-          </p>
-
-          <div className="my-5 w-full  flex justify-center items-center">
-            <div className="flex  w-full items-center justify-center ">
-              <div className="flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-tr from-blue-500 to-sky-500 animate-spin">
-                <div className="h-9 w-9 rounded-full bg-gray-200"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )} */}
       {openModel && aqiData && (
         <div className="">
           <Brezzometeraqi

@@ -10,7 +10,7 @@ export default function Home() {
       <title>AQI-Cipla Breathfree</title>
       <Header />
       {/* <Brezzometeraqi /> */}
-      {/* <Weatherchannel /> */}
+      <Weatherchannel />
       {/* <Openweatherapi /> */}
     </>
   );

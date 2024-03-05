@@ -1,0 +1,18 @@
+@keyframes gradient-border {
+    0% {
+        border-color: #87ceeb;
+    }
+
+    50% {
+        border-color: #1e90ff;
+    }
+
+    100% {
+        border-color: #87ceeb;
+    }
+}
+
+.animate-border {
+    border-image: linear-gradient(to right, #87ceeb, #1e90ff) 1;
+    animation: gradient-border 3s ease infinite;
+}
