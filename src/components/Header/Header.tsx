@@ -4,6 +4,7 @@ import { FaArrowCircleRight } from "react-icons/fa";
 import Brezzometeraqi from "../Brezzometer-aqi/Brezzometer-aqi";
 import Image from "next/image";
 import styles from "../../styles/button.module.css";
+import AqiButtons from "./AqiButtons";
 
 interface AqiData {
   dateTime?: string;
@@ -207,7 +208,7 @@ const Header = () => {
                       }  `}
                     >
                       <h3 className="text-blue-500  mx-2 text-6xl font-bold flex">
-                        AQI {""}
+                        AQI
                         {aqiData?.indexes && aqiData?.indexes[1]?.aqi}
                         <span style={{ fontSize: "24px" }}>
                           {aqiData &&
@@ -275,6 +276,36 @@ const Header = () => {
           </div>
         </div>
       </div>
+
+      {/* --- Variants for the Demo --- */}
+      <div className="flex flex-wrap bg-white text-black rounded-lg p-5 mx-5">
+        {AQIButtonsData &&
+          AQIButtonsData.map((aData) => (
+            <AqiButtons
+              key={aData.indexes[0].code}
+              aqiData={aData}
+              weatherData={{
+                weather: [
+                  {
+                    id: 711,
+                    main: "Smoke",
+                    description: "smoke",
+                    icon: "01d",
+                  },
+                ],
+                main: {
+                  temp: 297.14,
+                  feels_like: 296.59,
+                  temp_min: 297.14,
+                  temp_max: 297.14,
+                  pressure: 1013,
+                  humidity: 38,
+                },
+                name: "Vadodara",
+              }}
+            />
+          ))}
+      </div>
       {/* Conditional rendering of BrezometerAQI component */}
       {openModel && aqiData && (
         <div className="">
@@ -290,5 +321,122 @@ const Header = () => {
     </div>
   );
 };
+
+const AQIButtonsData = [
+  {
+    dateTime: "2024-03-05T15:00:00Z",
+    regionCode: "in",
+    indexes: [
+      {},
+      {
+        code: "ind_cpcb",
+        displayName: "NAQI (IN)",
+        aqi: 41,
+        aqiDisplay: "133",
+        color: {
+          green: 0.6902,
+          blue: 0.3137,
+        },
+        category: "Good air quality",
+        dominantPollutant: "o3",
+      },
+    ],
+  },
+
+  {
+    dateTime: "2024-03-05T15:00:00Z",
+    regionCode: "in",
+    indexes: [
+      {},
+      {
+        code: "ind_cpcb",
+        displayName: "NAQI (IN)",
+        aqi: 80,
+        aqiDisplay: "80",
+        color: {
+          red: 0.1451,
+          green: 0.5882,
+          blue: 0.7451,
+        },
+        category: "Satisfactory air quality",
+        dominantPollutant: "o3",
+      },
+    ],
+  },
+  {
+    dateTime: "2024-03-05T15:00:00Z",
+    regionCode: "in",
+    indexes: [
+      {},
+      {
+        code: "ind_cpcb",
+        displayName: "NAQI (IN)",
+        aqi: 133,
+        aqiDisplay: "133",
+        color: {
+          red: 1,
+          green: 1,
+        },
+        category: "Moderate air quality",
+        dominantPollutant: "o3",
+      },
+    ],
+  },
+  {
+    dateTime: "2024-03-05T15:00:00Z",
+    regionCode: "in",
+    indexes: [
+      {},
+      {
+        code: "ind_cpcb",
+        displayName: "NAQI (IN)",
+        aqi: 240,
+        aqiDisplay: "240",
+        color: {
+          red: 1,
+          green: 0.3961,
+        },
+        category: "Poor air quality",
+        dominantPollutant: "o3",
+      },
+    ],
+  },
+  {
+    dateTime: "2024-03-05T15:00:00Z",
+    regionCode: "in",
+    indexes: [
+      {},
+      {
+        code: "ind_cpcb",
+        displayName: "NAQI (IN)",
+        aqi: 320,
+        aqiDisplay: "320",
+        color: {
+          red: 1,
+        },
+        category: "Very poor air quality",
+        dominantPollutant: "o3",
+      },
+    ],
+  },
+  {
+    dateTime: "2024-03-05T15:00:00Z",
+    regionCode: "in",
+    indexes: [
+      {},
+      {
+        code: "ind_cpcb",
+        displayName: "NAQI (IN)",
+        aqi: 450,
+        aqiDisplay: "450",
+        color: {
+          red: 0.7529,
+        },
+        category: "Severe air quality",
+        dominantPollutant: "o3",
+      },
+    ],
+  },
+];
 
 export default Header;

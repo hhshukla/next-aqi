@@ -18,9 +18,12 @@
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: linear-gradient(to bottom,
+  background: linear-gradient(
+      to bottom,
       transparent,
-      rgb(var(--background-end-rgb))) rgb(var(--background-start-rgb));
+      rgb(var(--background-end-rgb))
+    )
+    rgb(var(--background-start-rgb));
 }
 
 @layer utilities {
@@ -86,55 +89,64 @@ body {
   left: 50%;
   transform: translate(-50%);
 } */
+@property --gradient-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
 
-  button.aqi-classname {
-    position: relative;
-    height: 60px;
-    width: 180px;
-    border-radius: 10px;
-    z-index: 3;
-    background-color: aquamarine;
+/* --- REF: https://codyhouse.co/nuggets/css-gradient-borders */
+.animated-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+  background: conic-gradient(
+        from var(--gradient-angle),
+        #d8ffc2,
+        #00ff2f,
+        #347732,
+        #2a7027,
+        #00ff2f,
+        #d8ffc2,
+        #d8ffc2
+      )
+      border-box,
+    conic-gradient(white, #d8ffc2) padding-box;
+
+  animation: rotation 6s linear infinite;
+  border-radius: 10px;
+  border: 5px solid transparent;
+}
+
+/* .animated-button::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: conic-gradient(
+    from var(--gradient-angle),
+    #d8ffc2,
+    #00ff2f,
+    #347732,
+    #2a7027,
+    #00ff2f,
+    #d8ffc2,
+    #d8ffc2
+  );
+  border-radius: inherit;
+  animation: rotation 6s linear infinite;
+} */
+
+
+
+@keyframes rotation {
+  0% {
+    --gradient-angle: 0deg;
   }
 
-  button.aqi-classname::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    z-index: 1;
-    background: conic-gradient(from var(--gradient-angle),
-        #a8ef80,
-        #2d8f85,
-        #b1c5c6,
-        #2d8f85,
-        #a8ef80);
-    border-radius: inherit;
-    animation: rotation 10s linear infinite;
+  100% {
+    --gradient-angle: 360deg;
   }
-
-  button.aqi-classname::before {
-    content: "";
-    height: calc(90% - 8px);
-    width: 90%;
-    top: 50%;
-    /* transform: ; */
-    transform: translate(-50%, -50%);
-    position: absolute;
-    border-radius: inherit;
-    z-index: 2;
-    background-color: white;
-  }
-
-  @keyframes rotation {
-    0% {
-      --gradient-angle: 0deg;
-    }
-
-    100% {
-      --gradient-angle: 360deg;
-    }
-  }
-
-
-
 }
